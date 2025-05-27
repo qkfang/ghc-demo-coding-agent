@@ -1,0 +1,128 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Rubik', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #F8F8F8;
+  color: #333;
+}
+
+/* LEGO-inspired color palette */
+:root {
+  --lego-red: #D01012;
+  --lego-yellow: #F5C518;
+  --lego-blue: #0055BF;
+  --lego-green: #00852B;
+  --lego-black: #05131D;
+  --lego-dark-gray: #6C6C6C;
+  --lego-light-gray: #A0A0A0;
+  --lego-white: #FFFFFF;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: var(--lego-blue);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--lego-red);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section {
+  padding: 4rem 0;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  background-color: var(--lego-yellow);
+  color: var(--lego-black);
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.btn:hover {
+  background-color: var(--lego-red);
+  color: white;
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+
+.btn-primary {
+  background-color: var(--lego-red);
+  color: white;
+}
+
+.btn-secondary {
+  background-color: var(--lego-blue);
+  color: white;
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  border-top: 8px solid var(--lego-red);
+}
+
+.card-content {
+  padding: 2rem;
+}
+
+.card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 2rem 0;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
