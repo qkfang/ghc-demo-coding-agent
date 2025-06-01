@@ -13,6 +13,15 @@ import argparse
 import math
 from typing import List, Tuple, Dict, Any
 import json
+import os
+
+# Optional imports for YOLO detection
+try:
+    from ultralytics import YOLO
+    YOLO_AVAILABLE = True
+except ImportError:
+    YOLO_AVAILABLE = False
+    print("Warning: ultralytics not available. YOLO detection will be disabled.")
 
 
 class ObjectDetector:
@@ -26,6 +35,25 @@ class ObjectDetector:
         self.image = None
         self.image_height = 0
         self.image_width = 0
+        self.yolo_model = None
+        
+        # COCO class names for common objects
+        self.coco_classes = {
+            0: 'person', 47: 'apple', 48: 'banana', 49: 'orange', 50: 'carrot',
+            51: 'hot_dog', 52: 'pizza', 53: 'donut', 54: 'cake', 39: 'bottle',
+            40: 'wine_glass', 41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon',
+            45: 'bowl', 67: 'cell_phone', 68: 'microwave', 69: 'oven', 70: 'toaster',
+            71: 'sink', 72: 'refrigerator', 73: 'book', 74: 'clock', 75: 'vase',
+            76: 'scissors', 77: 'teddy_bear', 78: 'hair_drier', 79: 'toothbrush',
+            1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus',
+            6: 'train', 7: 'truck', 8: 'boat', 9: 'traffic_light', 10: 'fire_hydrant',
+            11: 'stop_sign', 12: 'parking_meter', 13: 'bench', 14: 'bird', 15: 'cat',
+            16: 'dog', 17: 'horse', 18: 'sheep', 19: 'cow', 20: 'elephant',
+            21: 'bear', 22: 'zebra', 23: 'giraffe', 24: 'backpack', 25: 'umbrella',
+            26: 'handbag', 27: 'tie', 28: 'suitcase', 29: 'frisbee', 30: 'skis',
+            31: 'snowboard', 32: 'sports_ball', 33: 'kite', 34: 'baseball_bat',
+            35: 'baseball_glove', 36: 'skateboard', 37: 'surfboard', 38: 'tennis_racket'
+        }
         
     def load_image(self, image_path: str) -> bool:
         """
@@ -50,12 +78,14 @@ class ObjectDetector:
             print(f"Error loading image: {e}")
             return False
     
-    def detect_objects_by_color(self, color_ranges: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def detect_objects_by_color(self, color_ranges: List[Dict[str, Any]], 
+                               use_preprocessing: bool = True) -> List[Dict[str, Any]]:
         """
-        Detect objects in the image based on color ranges.
+        Detect objects in the image based on color ranges with improved noise handling.
         
         Args:
             color_ranges (List[Dict]): List of color range dictionaries with 'name', 'lower', 'upper' keys
+            use_preprocessing (bool): Whether to apply noise reduction preprocessing
             
         Returns:
             List[Dict]: List of detected objects with their properties
@@ -64,8 +94,17 @@ class ObjectDetector:
             print("No image loaded")
             return []
         
+        # Apply preprocessing for complex backgrounds
+        processed_image = self.image.copy()
+        if use_preprocessing:
+            # Apply Gaussian blur to reduce noise
+            processed_image = cv2.GaussianBlur(processed_image, (5, 5), 0)
+            
+            # Apply bilateral filter to reduce noise while keeping edges sharp
+            processed_image = cv2.bilateralFilter(processed_image, 9, 75, 75)
+        
         # Convert BGR to HSV for better color detection
-        hsv = cv2.cvtColor(self.image, cv2.COLOR_BGR2HSV)
+        hsv = cv2.cvtColor(processed_image, cv2.COLOR_BGR2HSV)
         detected_objects = []
         
         for color_range in color_ranges:
@@ -76,17 +115,31 @@ class ObjectDetector:
             # Create mask for the color range
             mask = cv2.inRange(hsv, lower, upper)
             
+            # Apply morphological operations to reduce noise
+            if use_preprocessing:
+                # Remove small noise
+                kernel = np.ones((3, 3), np.uint8)
+                mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+                # Fill holes
+                mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+                # Smooth edges
+                mask = cv2.medianBlur(mask, 5)
+            
             # Find contours
             contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
             
             for contour in contours:
-                # Filter small contours
+                # Filter small contours (adaptive threshold based on image size)
+                min_area = max(500, self.image_width * self.image_height * 0.001)  # At least 0.1% of image
                 area = cv2.contourArea(contour)
-                if area < 500:  # Minimum area threshold
+                if area < min_area:
                     continue
                 
-                # Get bounding rectangle
+                # Filter contours that are too elongated (likely noise)
                 x, y, w, h = cv2.boundingRect(contour)
+                aspect_ratio = max(w, h) / min(w, h)
+                if aspect_ratio > 10:  # Skip very elongated shapes
+                    continue
                 
                 # Calculate center point
                 center_x = x + w // 2
@@ -111,7 +164,8 @@ class ObjectDetector:
                     'bounding_box': (x, y, w, h),
                     'area': area,
                     'orientation_angle': angle,
-                    'contour': contour
+                    'contour': contour,
+                    'detection_method': 'color'
                 }
                 
                 detected_objects.append(obj_data)
@@ -172,6 +226,101 @@ class ObjectDetector:
                     
             except Exception as e:
                 print(f"Error processing template {template_path}: {e}")
+        
+        self.detected_objects = detected_objects
+        return detected_objects
+    
+    def detect_objects_by_yolo(self, confidence_threshold: float = 0.5, 
+                              target_objects: List[str] = None) -> List[Dict[str, Any]]:
+        """
+        Detect objects using YOLO deep learning model.
+        
+        Args:
+            confidence_threshold (float): Minimum confidence score for detections (0-1)
+            target_objects (List[str]): List of specific object names to detect (e.g., ['apple', 'bottle'])
+                                       If None, detects all objects
+            
+        Returns:
+            List[Dict]: List of detected objects
+        """
+        if not YOLO_AVAILABLE:
+            print("Error: YOLO detection requires ultralytics package. Install with: pip install ultralytics")
+            return []
+            
+        if self.image is None:
+            print("No image loaded")
+            return []
+        
+        # Initialize YOLO model if not already done
+        if self.yolo_model is None:
+            try:
+                print("Loading YOLO model (this may take a moment on first run)...")
+                self.yolo_model = YOLO('yolov8n.pt')  # Use nano model for speed
+                print("YOLO model loaded successfully")
+            except Exception as e:
+                print(f"Error loading YOLO model: {e}")
+                return []
+        
+        detected_objects = []
+        
+        try:
+            # Run YOLO inference
+            results = self.yolo_model(self.image, conf=confidence_threshold, verbose=False)
+            
+            for result in results:
+                boxes = result.boxes
+                if boxes is None:
+                    continue
+                    
+                for box in boxes:
+                    # Extract detection data
+                    x1, y1, x2, y2 = box.xyxy[0].cpu().numpy()
+                    confidence = float(box.conf[0].cpu().numpy())
+                    class_id = int(box.cls[0].cpu().numpy())
+                    
+                    # Get class name
+                    class_name = self.coco_classes.get(class_id, f'class_{class_id}')
+                    
+                    # Filter by target objects if specified
+                    if target_objects and class_name not in target_objects:
+                        continue
+                    
+                    # Calculate center and dimensions
+                    center_x = int((x1 + x2) / 2)
+                    center_y = int((y1 + y2) / 2)
+                    width = int(x2 - x1)
+                    height = int(y2 - y1)
+                    area = width * height
+                    
+                    # Convert to 2D coordinate system (origin at bottom-left)
+                    coord_x = center_x
+                    coord_y = self.image_height - center_y
+                    
+                    # Estimate orientation from bounding box aspect ratio
+                    if width > height * 1.5:
+                        orientation_angle = 0  # Horizontal
+                    elif height > width * 1.5:
+                        orientation_angle = 90  # Vertical
+                    else:
+                        orientation_angle = 45  # Roughly square
+                    
+                    obj_data = {
+                        'name': class_name,
+                        'center': (center_x, center_y),
+                        'coordinates_2d': (coord_x, coord_y),
+                        'bounding_box': (int(x1), int(y1), width, height),
+                        'area': area,
+                        'orientation_angle': orientation_angle,
+                        'confidence': confidence,
+                        'class_id': class_id,
+                        'detection_method': 'yolo'
+                    }
+                    
+                    detected_objects.append(obj_data)
+                    
+        except Exception as e:
+            print(f"Error during YOLO detection: {e}")
+            return []
         
         self.detected_objects = detected_objects
         return detected_objects
@@ -360,14 +509,20 @@ def main():
     """Main function to run the object detection and distance calculation."""
     parser = argparse.ArgumentParser(description='Detect objects and calculate distances in images')
     parser.add_argument('image_path', help='Path to input image')
-    parser.add_argument('--method', choices=['color', 'template'], default='color',
-                       help='Detection method: color-based or template matching')
+    parser.add_argument('--method', choices=['color', 'template', 'yolo'], default='color',
+                       help='Detection method: color-based, template matching, or YOLO deep learning')
     parser.add_argument('--templates', nargs='+', help='Template image paths (for template method)')
+    parser.add_argument('--target-objects', nargs='+', 
+                       help='Specific objects to detect (for YOLO method, e.g., apple bottle car)')
+    parser.add_argument('--confidence', type=float, default=0.5,
+                       help='Confidence threshold for YOLO detection (0-1)')
     parser.add_argument('--output', help='Output JSON file path')
     parser.add_argument('--visualize', help='Save visualization image path')
     parser.add_argument('--pixels-per-unit', type=float, default=1.0,
                        help='Pixels per unit for distance measurement')
     parser.add_argument('--no-display', action='store_true', help='Don\'t display visualization')
+    parser.add_argument('--no-preprocessing', action='store_true', 
+                       help='Disable noise reduction preprocessing (for color method)')
     
     args = parser.parse_args()
     
@@ -381,16 +536,25 @@ def main():
     # Detect objects based on method
     if args.method == 'color':
         color_ranges = create_sample_color_ranges()
-        detected_objects = detector.detect_objects_by_color(color_ranges)
+        detected_objects = detector.detect_objects_by_color(
+            color_ranges, use_preprocessing=not args.no_preprocessing)
     elif args.method == 'template':
         if not args.templates:
             print("Template paths required for template matching method")
             return 1
         detected_objects = detector.detect_objects_by_template(args.templates)
+    elif args.method == 'yolo':
+        detected_objects = detector.detect_objects_by_yolo(
+            confidence_threshold=args.confidence, 
+            target_objects=args.target_objects)
+        if not detected_objects and not YOLO_AVAILABLE:
+            print("YOLO method requires ultralytics package. Install with: pip install ultralytics")
+            return 1
     
     print(f"\nDetected {len(detected_objects)} objects:")
     for i, obj in enumerate(detected_objects):
-        print(f"  {i+1}. {obj['name']} at {obj['coordinates_2d']} (area: {obj['area']} pixels)")
+        confidence_info = f" (conf: {obj['confidence']:.2f})" if 'confidence' in obj else ""
+        print(f"  {i+1}. {obj['name']} at {obj['coordinates_2d']} (area: {obj['area']} pixels){confidence_info}")
     
     # Get analysis
     analysis = detector.get_object_analysis(args.pixels_per_unit)
