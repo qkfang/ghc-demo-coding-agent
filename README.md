@@ -54,6 +54,13 @@ python3 object_detector.py image.jpg --method template --templates template1.jpg
 python3 object_detector.py image.jpg --no-display
 ```
 
+#### Using Sample Image
+
+Test with the included sample image:
+```bash
+python3 object_detector.py sample_image.jpg
+```
+
 #### Creating Test Images
 
 Use the included test image generator:

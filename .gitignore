@@ -31,6 +31,9 @@ test_results.json
 *.bmp
 *.tiff
 
+# Allow sample image
+!sample_image.jpg
+
 # IDE files
 .vscode/
 .idea/
