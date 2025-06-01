@@ -21,7 +21,7 @@ wheels/
 *.egg
 MANIFEST
 
-# Test files
+# Test files and outputs
 test_image.jpg
 test_results.json
 *.png
@@ -30,9 +30,21 @@ test_results.json
 *.gif
 *.bmp
 *.tiff
+*.json
 
 # Allow sample image
 !sample_image.jpg
+!requirements.txt
+
+# Test sequences and tracking outputs
+test_sequence/
+realistic_sequence/
+example*.png
+example*.json
+movement_map.png
+realistic_movement.png
+tracking_results.json
+realistic_tracking.json
 
 # IDE files
 .vscode/
@@ -43,3 +55,9 @@ test_results.json
 # OS files
 .DS_Store
 Thumbs.db
+
+# YOLO models and cache
+runs/
+weights/
+*.pt
+.config/

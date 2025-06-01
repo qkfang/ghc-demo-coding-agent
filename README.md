@@ -1,11 +1,12 @@
 # gh-coding-agent
 
-## Object Detection and Distance Calculation
+## Object Detection and Movement Tracking
 
-This repository contains a Python script that detects objects in images and calculates distances between them on a 2D plane, treating the surface as a flat table. The system now supports **real-world object detection** in complex environments with patterned backgrounds.
+This repository contains a comprehensive Python system for detecting objects in images and tracking their movements across multiple photos taken from the same location. The system supports both **real-world object detection** in complex environments and **temporal tracking** for movement analysis.
 
 ### Features
 
+#### Object Detection
 - **Multiple Detection Methods**: Color-based detection, template matching, and **YOLO deep learning** for real-world objects
 - **Real-world Object Recognition**: Detect apples, toy cars, water bottles, and 80+ other object types
 - **Complex Background Handling**: Advanced preprocessing to work with noisy, patterned backgrounds
@@ -15,9 +16,18 @@ This repository contains a Python script that detects objects in images and calc
 - **Visualization**: Generates visual output showing detected objects and distances
 - **JSON Output**: Provides structured data output for further processing
 
+#### Movement Tracking (NEW)
+- **Multi-Image Analysis**: Process sequences of photos taken from the same location
+- **Object Tracking**: Track object movements across multiple frames using advanced matching algorithms
+- **Movement Analysis**: Calculate distances moved, average speeds, and trajectories
+- **Virtual Map Visualization**: Display object movement paths on an interactive map
+- **Temporal Data**: Export detailed tracking data with timestamps and position history
+- **Object Lifecycle**: Handle objects that appear, disappear, or move in/out of frame
+- **Customizable Parameters**: Adjustable distance thresholds and tracking sensitivity
+
 ### Detection Methods
 
-1. **YOLO Deep Learning** (NEW): Detects real-world objects like fruits, vehicles, electronics, animals, etc.
+1. **YOLO Deep Learning**: Detects real-world objects like fruits, vehicles, electronics, animals, etc.
 2. **Enhanced Color Detection**: Improved noise reduction for complex backgrounds
 3. **Template Matching**: Match specific template images
 
@@ -34,39 +44,51 @@ cd gh-coding-agent
 pip install -r requirements.txt
 ```
 
-3. For YOLO detection (real-world objects), install additional dependencies:
-```bash
-pip install ultralytics torch torchvision
-```
+3. For YOLO detection (real-world objects), dependencies are already included in requirements.txt
 
 ### Quick Start
 
-#### Detect Real-world Objects (Recommended)
+#### Single Image Detection
 ```bash
 # Detect fruits on a table
 python3 object_detector.py kitchen_photo.jpg --method yolo --target-objects apple banana orange
 
-# Detect vehicles in a parking lot  
-python3 object_detector.py parking.jpg --method yolo --target-objects car truck motorcycle
-
-# Detect bottles and containers
-python3 object_detector.py table_scene.jpg --method yolo --target-objects bottle cup bowl
+# Color-based detection with sample image
+python3 object_detector.py sample_image.jpg --method color
 ```
 
-#### Color-based Detection (Works with simple colored objects)
+#### Movement Tracking (NEW)
 ```bash
-# Basic color detection with noise reduction
-python3 object_detector.py image.jpg --method color
+# Track colored objects across multiple photos
+python3 object_tracker.py photo1.jpg photo2.jpg photo3.jpg --method color --visualize movement_map.png
 
-# Test with included sample
-python3 object_detector.py sample_image.jpg
+# Track real-world objects with YOLO
+python3 object_tracker.py scene_*.jpg --method yolo --target-objects car person --visualize tracking.png
+
+# Export detailed tracking data
+python3 object_tracker.py sequence/*.jpg --method color --output tracking_data.json --max-distance 150
 ```
 
 ### Advanced Usage
 
-#### YOLO Detection Options
+#### Movement Tracking Options
 ```bash
-# Detect all objects with high confidence
+# Track with custom distance threshold
+python3 object_tracker.py photos/*.jpg --method color --max-distance 200 --visualize map.png
+
+# Real-world measurements with movement tracking
+python3 object_tracker.py images/*.jpg --method yolo --pixels-per-unit 10.0 --output data.json
+
+# Track specific object types only
+python3 object_tracker.py sequence/*.jpg --method yolo --target-objects apple bottle --confidence 0.4
+
+# Complex tracking scenario
+python3 object_tracker.py complex_scene_*.jpg --method color --max-distance 150 --no-display
+```
+
+#### Single Image Detection Options
+```bash
+# YOLO detection with high confidence
 python3 object_detector.py complex_scene.jpg --method yolo --confidence 0.7
 
 # Save results and visualization
@@ -74,30 +96,97 @@ python3 object_detector.py image.jpg --method yolo --output results.json --visua
 
 # Specify pixels per unit for real-world measurements
 python3 object_detector.py image.jpg --method yolo --pixels-per-unit 10.0
-```
 
-#### Color Detection Options
-```bash
-# Disable noise reduction for clean images
+# Color detection without noise reduction
 python3 object_detector.py clean_image.jpg --method color --no-preprocessing
 
-# Save results to JSON file
-python3 object_detector.py image.jpg --method color --output results.json
-```
-
-#### Template Matching
-```bash
-# Use template matching instead of other methods
+# Template matching
 python3 object_detector.py image.jpg --method template --templates template1.jpg template2.jpg
 ```
 
 #### Examples and Demos
 ```bash
-# Run examples showing different use cases
-python3 real_world_example.py
+# Run comprehensive tracking examples
+python3 tracking_example.py
 
-# Run without displaying visualization
-python3 object_detector.py image.jpg --no-display
+# Create test sequences for validation
+python3 create_tracking_test.py --type both
+
+# Run original detection examples
+python3 real_world_example.py
+```
+
+### Movement Tracking Parameters
+
+- `--max-distance`: Maximum pixels an object can move between frames (default: 100)
+- `--pixels-per-unit`: Conversion factor for real-world measurements (default: 1.0)
+- `--visualize`: Save movement map visualization to specified file
+- `--output`: Export tracking data to JSON file
+- `--no-display`: Run without showing visualizations
+
+### Output Formats
+
+#### Movement Tracking JSON Structure
+```json
+{
+  "total_frames": 5,
+  "tracking_summary": {
+    "total_tracks": 3,
+    "active_tracks": 2,
+    "completed_tracks": 1
+  },
+  "tracked_objects": [
+    {
+      "track_id": 1,
+      "object_type": "red_object",
+      "duration_frames": 5,
+      "total_distance_moved": 450.5,
+      "average_speed": 112.6,
+      "trajectory": [[100, 200], [150, 220], [200, 240]],
+      "first_position": [100, 200],
+      "last_position": [200, 240]
+    }
+  ],
+  "movement_statistics": {
+    "total_distance_all_objects": 1200.3,
+    "max_distance_single_object": 450.5,
+    "max_speed_observed": 125.4
+  }
+}
+```
+
+### Use Cases
+
+#### Movement Tracking Applications
+- **Security Monitoring**: Track people and vehicles in surveillance footage
+- **Sports Analysis**: Track player movements and ball trajectories
+- **Warehouse Management**: Monitor movement of packages and equipment
+- **Scientific Research**: Track animal behavior or object movement in experiments
+- **Quality Control**: Monitor product movement on assembly lines
+- **Traffic Analysis**: Track vehicle flow and patterns
+
+#### Object Detection Applications  
+- **Inventory Management**: Count and locate items on shelves or tables
+- **Quality Control**: Identify defective products on assembly lines
+- **Food Service**: Track food items and containers in kitchens
+- **Retail Analytics**: Monitor product placement and customer interactions
+- **Research**: Analyze object arrangements and spatial relationships
+
+### Technical Details
+
+#### Tracking Algorithm
+The movement tracking system uses:
+1. **Object Detection**: Each frame processed with chosen detection method
+2. **Position Matching**: Objects matched between frames using distance-based algorithms
+3. **Trajectory Building**: Movement paths constructed from matched positions
+4. **Lifecycle Management**: Handles objects appearing/disappearing from view
+5. **Statistics Calculation**: Movement distances, speeds, and patterns analyzed
+
+#### Coordinate System
+- Origin at bottom-left corner of image
+- X-axis points right, Y-axis points up
+- Positions reported in pixel coordinates (convertible to real-world units)
+- All distances calculated using Euclidean geometry
 ```
 
 ### Supported Objects (YOLO Method)
