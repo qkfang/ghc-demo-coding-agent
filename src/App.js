@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import RoboticsPage from './pages/RoboticsPage';
+import DanielBioPage from './pages/DanielBioPage';
 
 const AppContainer = styled.div`
   display: flex;
@@ -30,6 +31,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/robotics" element={<RoboticsPage />} />
+          <Route path="/daniel" element={<DanielBioPage />} />
         </Routes>
       </Main>
       <Footer />

@@ -127,6 +127,7 @@ const Header = () => {
             <NavItem to="/">Home</NavItem>
             <NavItem to="/about">About</NavItem>
             <NavItem to="/robotics">Robotics</NavItem>
+            <NavItem to="/daniel">Daniel</NavItem>
           </NavLinks>
         </Nav>
       </div>
