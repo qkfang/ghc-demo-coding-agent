@@ -1,0 +1,26 @@
+{
+  "name": "gh-coding-agent",
+  "version": "1.0.0",
+  "description": "Microsoft Build Sessions Scraper - Extract session information and export to Excel",
+  "main": "scrape-build-sessions.js",
+  "scripts": {
+    "start": "node scrape-build-sessions.js",
+    "scrape": "node scrape-build-sessions.js",
+    "test": "node test-scraper.js",
+    "demo": "node test-scraper.js"
+  },
+  "keywords": [
+    "scraper",
+    "microsoft",
+    "build",
+    "sessions",
+    "excel"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.11.0",
+    "cheerio": "^1.1.2",
+    "xlsx": "^0.18.5"
+  }
+}
