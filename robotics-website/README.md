@@ -1,16 +1,89 @@
-# React + Vite
+# LEGO Robotics Team Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive React website for a LEGO Robotics team, built with Vite and React Router.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Three Pages:**
+  - **Home**: Team introduction, highlights, and call-to-action
+  - **About**: Mission statement, values, team information, and achievements
+  - **Robotics**: Featured robotics projects and technologies used
 
-## React Compiler
+- **Modern Tech Stack:**
+  - React 19
+  - React Router DOM for navigation
+  - Vite for fast development and building
+  - Custom CSS styling with responsive design
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Getting Started
 
-## Expanding the ESLint configuration
+### Prerequisites
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Node.js (v14 or higher)
+- npm
+
+### Installation
+
+1. Clone the repository
+2. Navigate to the robotics-website directory:
+   ```bash
+   cd robotics-website
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Development
+
+Run the development server:
+```bash
+npm run dev
+```
+
+The website will be available at `http://localhost:5173/`
+
+### Building for Production
+
+Build the website:
+```bash
+npm run build
+```
+
+The built files will be in the `dist/` directory.
+
+### Preview Production Build
+
+Preview the production build locally:
+```bash
+npm run preview
+```
+
+## Project Structure
+
+```
+robotics-website/
+├── src/
+│   ├── components/         # Reusable components
+│   │   ├── Navigation.jsx
+│   │   └── Navigation.css
+│   ├── pages/             # Page components
+│   │   ├── Home.jsx
+│   │   ├── Home.css
+│   │   ├── About.jsx
+│   │   ├── About.css
+│   │   ├── Robotics.jsx
+│   │   └── Robotics.css
+│   ├── App.jsx            # Main app component with routing
+│   ├── App.css
+│   ├── main.jsx           # Entry point
+│   └── index.css          # Global styles
+├── public/                # Static assets
+├── index.html             # HTML template
+└── package.json           # Dependencies and scripts
+```
+
+## Screenshots
+
+See the PR for screenshots of all three pages.
+
