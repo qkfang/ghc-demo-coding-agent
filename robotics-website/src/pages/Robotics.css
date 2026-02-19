@@ -1,0 +1,67 @@
+.robotics-section {
+  max-width: 900px;
+  margin: 2rem auto;
+}
+
+.robot-card, .technologies, .achievements {
+  background: white;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.robot-card h2, .technologies h2, .achievements h2 {
+  color: #1976d2;
+  margin-bottom: 1rem;
+}
+
+.robot-details ul, .achievements ul {
+  color: #333;
+  line-height: 1.8;
+  padding-left: 1.5rem;
+}
+
+.robot-details li, .achievements li {
+  margin-bottom: 0.5rem;
+}
+
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.tech-item {
+  padding: 1rem;
+  border: 2px solid #1976d2;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.tech-item:hover {
+  background-color: #bbdefb;
+}
+
+.tech-item h3 {
+  color: #1976d2;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.tech-item p {
+  color: #333;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.achievements ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.achievements li {
+  font-size: 1.1rem;
+  padding: 0.5rem 0;
+}
