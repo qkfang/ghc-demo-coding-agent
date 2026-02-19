@@ -1,0 +1,43 @@
+.about-section {
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.mission, .values, .team-info {
+  background: white;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mission h2, .values h2, .team-info h2 {
+  color: #1976d2;
+  margin-bottom: 1rem;
+}
+
+.mission p, .team-info p {
+  color: #333;
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.values ul {
+  list-style: none;
+  padding: 0;
+}
+
+.values li {
+  color: #333;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #e0e0e0;
+  line-height: 1.6;
+}
+
+.values li:last-child {
+  border-bottom: none;
+}
+
+.values strong {
+  color: #1976d2;
+}

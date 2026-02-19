@@ -1,0 +1,40 @@
+.hero-section {
+  margin-top: 2rem;
+}
+
+.tagline {
+  font-size: 1.5rem;
+  color: #1976d2;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.highlight-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.highlight-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.highlight-card h3 {
+  color: #1976d2;
+  margin-bottom: 0.5rem;
+}
+
+.highlight-card p {
+  color: #333;
+  line-height: 1.6;
+}
