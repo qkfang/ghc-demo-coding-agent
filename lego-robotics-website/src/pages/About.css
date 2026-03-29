@@ -1,0 +1,172 @@
+.about {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+}
+
+.about-hero {
+  padding: 3rem 0 2rem;
+  text-align: center;
+}
+
+.about-hero h1 {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: #1a1a2e;
+  margin-bottom: 1rem;
+}
+
+.about-hero p {
+  font-size: 1.1rem;
+  color: #555;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.highlight {
+  color: #1d4ed8;
+}
+
+.mission-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.mission-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.mission-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.mission-card h2 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 0.75rem;
+}
+
+.mission-card p,
+.mission-card ul {
+  color: #555;
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.mission-card ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+.mission-card ul li {
+  margin-bottom: 0.4rem;
+}
+
+.team-section {
+  margin: 3rem 0;
+}
+
+.team-section h2,
+.coaches-section h2 {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.team-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.team-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.member-avatar {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+}
+
+.team-card h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 0.3rem;
+}
+
+.member-role {
+  font-size: 0.85rem;
+  color: #1d4ed8;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.member-bio {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+.coaches-section {
+  margin: 2rem 0 1rem;
+  text-align: center;
+}
+
+.coaches-section p {
+  color: #555;
+  font-size: 0.95rem;
+  max-width: 650px;
+  margin: 0 auto 1.5rem;
+  line-height: 1.7;
+}
+
+.coaches-grid {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.coach-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.25rem 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.coach-emoji {
+  font-size: 2rem;
+}
+
+.coach-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #333;
+}
