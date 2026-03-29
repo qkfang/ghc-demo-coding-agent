@@ -25,7 +25,7 @@
 }
 
 .highlight {
-  color: #e3000b;
+  color: #1d4ed8;
 }
 
 .robot-showcase {
@@ -113,12 +113,12 @@
 }
 
 .stat-card {
-  background: #e3000b;
+  background: #1d4ed8;
   border-radius: 12px;
   padding: 1.5rem;
   text-align: center;
   color: #fff;
-  box-shadow: 0 4px 16px rgba(227, 0, 11, 0.25);
+  box-shadow: 0 4px 16px rgba(29, 78, 216, 0.25);
 }
 
 .stat-value {
@@ -206,5 +206,5 @@
 .mission-points {
   font-size: 0.9rem;
   font-weight: 700;
-  color: #e3000b;
+  color: #1d4ed8;
 }

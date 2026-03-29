@@ -85,7 +85,7 @@
 }
 
 .btn-primary {
-  background-color: #e3000b;
+  background-color: #1d4ed8;
   color: #fff;
 }
 
@@ -148,7 +148,7 @@
 
 /* CTA */
 .cta {
-  background: linear-gradient(135deg, #e3000b 0%, #a00008 100%);
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
   border-radius: 16px;
   padding: 3rem 2rem;
   text-align: center;
@@ -170,9 +170,9 @@
 
 .cta .btn-primary {
   background: #fff;
-  color: #e3000b;
+  color: #1d4ed8;
 }
 
 .highlight {
-  color: #e3000b;
+  color: #1d4ed8;
 }
