@@ -1,0 +1,210 @@
+.robotics {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+}
+
+.robotics-hero {
+  padding: 3rem 0 2rem;
+  text-align: center;
+}
+
+.robotics-hero h1 {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: #1a1a2e;
+  margin-bottom: 1rem;
+}
+
+.robotics-hero p {
+  font-size: 1.05rem;
+  color: #555;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.highlight {
+  color: #e3000b;
+}
+
+.robot-showcase {
+  display: flex;
+  gap: 2.5rem;
+  align-items: flex-start;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.robot-display {
+  flex: 0 0 auto;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 16px;
+  padding: 2.5rem 3rem;
+  text-align: center;
+  color: #fff;
+  min-width: 220px;
+}
+
+.robot-big {
+  font-size: 6rem;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+.robot-name {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+}
+
+.robot-tagline {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.robot-specs {
+  flex: 1;
+}
+
+.robot-specs h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 1rem;
+}
+
+.specs-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.specs-table tr {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.specs-table td {
+  padding: 0.75rem 0.5rem;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.specs-table td:first-child {
+  font-weight: 600;
+  width: 50%;
+}
+
+.stats-section {
+  margin: 2.5rem 0;
+}
+
+.stats-section h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.25rem;
+}
+
+.stat-card {
+  background: #e3000b;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(227, 0, 11, 0.25);
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  font-weight: 600;
+}
+
+.missions-section {
+  margin: 2.5rem 0;
+}
+
+.missions-section h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.missions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.mission-card {
+  background: #fff;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.mission-card.status-completed {
+  border-color: #22c55e;
+  background: #f0fdf4;
+}
+
+.mission-card.status-in-progress {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.mission-card.status-planned {
+  border-color: #d1d5db;
+  background: #f9fafb;
+}
+
+.mission-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.mission-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #1a1a2e;
+}
+
+.mission-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  background: rgba(0,0,0,0.06);
+}
+
+.mission-description {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+.mission-points {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #e3000b;
+}
