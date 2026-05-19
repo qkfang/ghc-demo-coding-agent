@@ -8,7 +8,10 @@ function App() {
   return (
     <div className="app">
       <header className="site-header">
-        <div className="brand">GHC Demo</div>
+        <div className="brand">
+          <span className="brand-mark" aria-hidden="true" />
+          <span>GHC Demo</span>
+        </div>
         <nav className="nav">
           <NavLink to="/" end className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
             Home
